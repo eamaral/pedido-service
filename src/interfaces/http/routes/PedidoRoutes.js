@@ -17,7 +17,7 @@ router.use(verifyToken);
  *       404:
  *         description: Nenhum pedido encontrado
  */
-router.get('/andamento', pedidoController.consultarPedidosEmAndamento);
+router.get('/andamento', pedidoController.listarEmPreparacao);
 
 /**
  * @swagger
@@ -37,7 +37,7 @@ router.get('/andamento', pedidoController.consultarPedidosEmAndamento);
  *       404:
  *         description: Pedido não encontrado
  */
-router.get('/:pedidoId', pedidoController.consultarPedidoPorId);
+router.get('/:id', pedidoController.buscarPorId);
 
 /**
  * @swagger
@@ -69,7 +69,7 @@ router.get('/:pedidoId', pedidoController.consultarPedidoPorId);
  *       400:
  *         description: Erro na criação do pedido
  */
-router.post('/', pedidoController.criarPedido);
+router.post('/', pedidoController.criar);
 
 /**
  * @swagger
@@ -92,7 +92,7 @@ router.post('/', pedidoController.criarPedido);
  *       404:
  *         description: Pedido não encontrado
  */
-router.post('/pronto', pedidoController.atualizarParaPronto);
+router.post('/status', pedidoController.atualizarStatus);
 
 /**
  * @swagger

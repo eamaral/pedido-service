@@ -28,6 +28,17 @@ class PedidoController {
     }
   }
 
+  async finalizarPedido(req, res) {
+    try {
+      const { pedidoId } = req.body;
+      const pedidoAtualizado = await atualizarStatusUseCase.execute(pedidoId, 'Finalizado');
+      return res.status(200).json(pedidoAtualizado);
+    } catch (error) {
+      console.error('Erro ao finalizar pedido:', error.message);
+      return res.status(400).json({ error: error.message });
+    }
+  }
+
   async buscarPorId(req, res) {
     try {
       const pedido = await pedidoRepository.findById(req.params.id);
