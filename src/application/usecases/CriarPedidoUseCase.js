@@ -1,11 +1,9 @@
 const PedidoRepository = require('../../domain/repositories/PedidoRepository');
-const ProdutoRepository = require('../../domain/repositories/ProdutoRepository');
 const PedidoDto = require('../dtos/PedidoDto');
 
 class CriarPedidoUseCase {
   constructor() {
     this.pedidoRepository = new PedidoRepository();
-    this.produtoRepository = new ProdutoRepository();
   }
 
   async execute({ itens, clienteId }) {
@@ -21,9 +19,9 @@ class CriarPedidoUseCase {
     const itensValidados = [];
 
     for (const item of itens) {
-      const produto = await this.produtoRepository.findById(item.produtoId);
+      const produto = this.mockBuscarProduto(item.produtoId);
       if (!produto) {
-        throw new Error(`Produto com ID ${item.produtoId} não encontrado.`);
+        throw new Error(`Produto com ID ${item.produtoId} não encontrado (mock).`);
       }
 
       itensValidados.push({
@@ -44,6 +42,17 @@ class CriarPedidoUseCase {
     });
 
     return new PedidoDto(pedido);
+  }
+
+  mockBuscarProduto(produtoId) {
+    const mockProdutos = {
+      '01': { id: '01', nome: 'Hamburguer', preco: 15.99 },
+      '02': { id: '02', nome: 'Batata Frita', preco: 7.5 },
+      '03': { id: '03', nome: 'Refrigerante', preco: 5.0 },
+      '04': { id: '04', nome: 'Sorvete', preco: 4.5 },
+    };
+
+    return mockProdutos[produtoId] || null;
   }
 }
 
