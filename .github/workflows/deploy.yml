@@ -31,6 +31,6 @@ jobs:
       - name: Force new ECS deployment
         run: |
           aws ecs update-service \
-            --cluster fastfood-ecs-cluster \
+            --cluster pedido-ecs-cluster \
             --service pedido-service \
             --force-new-deployment
