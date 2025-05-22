@@ -3,11 +3,25 @@ const router = express.Router();
 const verifyToken = require('../middlewares/verifyToken');
 const pedidoController = require('../../../application/controllers/PedidoController');
 
+/**
+ * @swagger
+ * /api/pedidos/health:
+ *   get:
+ *     summary: Health check do serviço de pedidos
+ *     tags: [Pedidos]
+ *     responses:
+ *       200:
+ *         description: OK
+ */
+router.get('/health', (req, res) => {
+  res.status(200).send('OK');
+});
+
 router.use(verifyToken);
 
 /**
  * @swagger
- * /pedidos/andamento:
+ * /api/pedidos/andamento:
  *   get:
  *     summary: Lista todos os pedidos com status "Em Preparação"
  *     tags: [Pedidos]
@@ -21,7 +35,7 @@ router.get('/andamento', pedidoController.listarEmPreparacao);
 
 /**
  * @swagger
- * /pedidos/{pedidoId}:
+ * /api/pedidos/{pedidoId}:
  *   get:
  *     summary: Consulta o andamento de um pedido por ID
  *     tags: [Pedidos]
@@ -41,7 +55,7 @@ router.get('/:id', pedidoController.buscarPorId);
 
 /**
  * @swagger
- * /pedidos:
+ * /api/pedidos:
  *   post:
  *     summary: Criar novo pedido
  *     tags: [Pedidos]
@@ -73,7 +87,7 @@ router.post('/', pedidoController.criar);
 
 /**
  * @swagger
- * /pedidos/pronto:
+ * /api/pedidos/status:
  *   post:
  *     summary: Atualizar pedido para "Pronto para retirada"
  *     tags: [Pedidos]
@@ -96,7 +110,7 @@ router.post('/status', pedidoController.atualizarStatus);
 
 /**
  * @swagger
- * /pedidos/finalizar:
+ * /api/pedidos/finalizar:
  *   post:
  *     summary: Finalizar pedido e atualizar pontos do cliente
  *     tags: [Pedidos]

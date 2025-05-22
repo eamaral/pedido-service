@@ -14,7 +14,7 @@ connectDB();
 const apiPrefix = '/api';
 const baseUrl = process.env.API_BASE_URL || `http://localhost:3000`;
 
-// Swagger
+// Swagger config
 const swaggerOptions = {
   swaggerDefinition: {
     openapi: '3.0.0',
@@ -25,9 +25,9 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: `${baseUrl}/api`,
+        url: `${baseUrl}/api/pedidos`,
         description: 'Ambiente Dinâmico',
-      }
+      },
     ],
     components: {
       securitySchemes: {
@@ -48,17 +48,14 @@ const swaggerOptions = {
 };
 
 const swaggerDocs = swaggerJsdoc(swaggerOptions);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+app.use('/api-docs/pedido', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
-// Health check
+// Health check na raiz
 app.get('/', (req, res) => {
   res.send('Pedido Service API is running.');
 });
-app.get('/health', (req, res) => {
-  res.status(200).send('OK');
-});
 
-// Rotas com prefixo /api
+// Rotas
 app.use(`${apiPrefix}/pedidos`, require('./src/interfaces/http/routes/PedidoRoutes'));
 
 const PORT = process.env.PORT || 3000;
@@ -66,5 +63,5 @@ const ENV = process.env.NODE_ENV || 'local';
 
 app.listen(PORT, () => {
   console.log(`✅ Pedido Service rodando no ambiente '${ENV}' na porta ${PORT}`);
-  console.log(`📘 Swagger disponível em ${baseUrl}/api-docs`);
+  console.log(`📘 Swagger disponível em ${baseUrl}/api-docs/pedido`);
 });
