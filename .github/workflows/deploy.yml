@@ -2,54 +2,61 @@ name: Build, Push and Deploy Pedido Service
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     env:
+      AWS_REGION: us-east-1
       ECR_REGISTRY: 124355673305.dkr.ecr.us-east-1.amazonaws.com
       ECR_REPOSITORY: pedido-service
+      ECR_IMAGE: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:latest
       CLUSTER_NAME: fastfood-cluster
       SERVICE_NAME: pedido-service
+      TASK_EXEC_ROLE: ecsTaskExecutionRole
 
     steps:
-      - name: Checkout repository
+      - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Configure AWS credentials
+      - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          aws-access-key-id:     ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region:            us-east-1
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Ensure ECS Task Execution Role Exists
+        run: |
+          if ! aws iam get-role --role-name $TASK_EXEC_ROLE >/dev/null 2>&1; then
+            aws iam create-role \
+              --role-name $TASK_EXEC_ROLE \
+              --assume-role-policy-document '{
+                "Version":"2012-10-17",
+                "Statement":[{"Effect":"Allow","Principal":{"Service":"ecs-tasks.amazonaws.com"},"Action":"sts:AssumeRole"}]
+              }'
+            aws iam attach-role-policy \
+              --role-name $TASK_EXEC_ROLE \
+              --policy-arn arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+            aws iam attach-role-policy \
+              --role-name $TASK_EXEC_ROLE \
+              --policy-arn arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+          else
+            echo "Role $TASK_EXEC_ROLE already exists"
+          fi
 
       - name: Login to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Ensure ECR repository exists
+      - name: Build and Push Docker image
         run: |
-          if ! aws ecr describe-repositories --repository-names "${ECR_REPOSITORY}" >/dev/null 2>&1; then
-            aws ecr create-repository --repository-name "${ECR_REPOSITORY}"
-          fi
-
-      - name: Build and Push Docker image to ECR
-        run: |
-          # monta a tag completa
-          IMAGE_TAG="${ECR_REGISTRY}/${ECR_REPOSITORY}:latest"
-          echo "Building $IMAGE_TAG"
-          docker build -t "$IMAGE_TAG" .
-          docker push "$IMAGE_TAG"
-     
-        env:
-          AWS_REGION: us-east-1
+          docker build -t $ECR_IMAGE .
+          docker push $ECR_IMAGE
 
       - name: Force new ECS deployment
         run: |
           aws ecs update-service \
-            --cluster "${CLUSTER_NAME}" \
-            --service "${SERVICE_NAME}" \
+            --cluster $CLUSTER_NAME \
+            --service $SERVICE_NAME \
             --force-new-deployment
-        env:
-          AWS_REGION: us-east-1
