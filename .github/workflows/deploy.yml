@@ -11,7 +11,6 @@ jobs:
     env:
       ECR_REGISTRY: 124355673305.dkr.ecr.us-east-1.amazonaws.com
       ECR_REPOSITORY: pedido-service
-      ECR_IMAGE: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:latest
       CLUSTER_NAME: fastfood-cluster
       SERVICE_NAME: pedido-service
 
@@ -37,8 +36,14 @@ jobs:
 
       - name: Build and Push Docker image to ECR
         run: |
-          docker build -t "${ECR_IMAGE}" .
-          docker push "${ECR_IMAGE}"
+          # monta a tag completa
+          IMAGE_TAG="${ECR_REGISTRY}/${ECR_REPOSITORY}:latest"
+          echo "Building $IMAGE_TAG"
+          docker build -t "$IMAGE_TAG" .
+          docker push "$IMAGE_TAG"
+     
+        env:
+          AWS_REGION: us-east-1
 
       - name: Force new ECS deployment
         run: |
@@ -46,3 +51,5 @@ jobs:
             --cluster "${CLUSTER_NAME}" \
             --service "${SERVICE_NAME}" \
             --force-new-deployment
+        env:
+          AWS_REGION: us-east-1
