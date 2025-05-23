@@ -8,6 +8,12 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    env:
+      ECR_REGISTRY: 124355673305.dkr.ecr.us-east-1.amazonaws.com
+      ECR_REPOSITORY: pedido-service
+      ECR_IMAGE: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:latest
+      CLUSTER_NAME: fastfood-cluster
+      SERVICE_NAME: pedido-service
 
     steps:
       - name: Checkout repository
@@ -16,21 +22,27 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-access-key-id:     ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+          aws-region:            us-east-1
 
       - name: Login to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v1
 
+      - name: Ensure ECR repository exists
+        run: |
+          if ! aws ecr describe-repositories --repository-names "${ECR_REPOSITORY}" >/dev/null 2>&1; then
+            aws ecr create-repository --repository-name "${ECR_REPOSITORY}"
+          fi
+
       - name: Build and Push Docker image to ECR
         run: |
-          docker build -t 124355673305.dkr.ecr.us-east-1.amazonaws.com/pedido-service:latest .
-          docker push 124355673305.dkr.ecr.us-east-1.amazonaws.com/pedido-service:latest
+          docker build -t "${ECR_IMAGE}" .
+          docker push "${ECR_IMAGE}"
 
       - name: Force new ECS deployment
         run: |
           aws ecs update-service \
-            --cluster fastfood-cluster \
-            --service pedido-service \
+            --cluster "${CLUSTER_NAME}" \
+            --service "${SERVICE_NAME}" \
             --force-new-deployment
