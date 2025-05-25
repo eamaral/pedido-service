@@ -1,4 +1,3 @@
-// src/domain/entities/Produto.js
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../../infrastructure/database/sequelize');
 const { v4: uuidv4 } = require('uuid');

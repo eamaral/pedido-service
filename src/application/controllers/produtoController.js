@@ -1,4 +1,3 @@
-// de dentro de src/application/controllers
 const CriarProdutoUseCase   = require('../usecases/CriarProdutoUseCase')
 const ListarProdutosUseCase = require('../usecases/ListarProdutosUseCase')
 const ProdutoDto            = require('../dtos/ProdutoDto')

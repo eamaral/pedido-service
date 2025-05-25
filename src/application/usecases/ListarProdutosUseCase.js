@@ -1,4 +1,3 @@
-// src/application/usecases/ListarProdutosUseCase.js
 const ProdutoRepository = require('../../domain/repositories/ProdutoRepository')
 
 class ListarProdutosUseCase {
