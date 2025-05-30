@@ -1,13 +1,19 @@
 class PedidoDto {
-    constructor(pedido) {
-      this.id = pedido.id;
-      this.clienteId = pedido.clienteId;
-      this.itens = pedido.itens;
-      this.total = pedido.total;
-      this.status = pedido.status;
-      this.qrCode = pedido.qrCode;
-    }
+  constructor({ id, clienteId, itens, total, status, createdAt, updatedAt }) {
+    this.pedidoId = id;
+    this.clienteId = clienteId;
+    this.itens = itens;
+    this.total = total;
+    this.status = status;
+    this.tempoEstimadoEntrega = this._calcularEstimativa(createdAt);
   }
-  
-  module.exports = PedidoDto;
-  
+
+  _calcularEstimativa(dataCriacao) {
+    const inicio = new Date(dataCriacao);
+    const fim = new Date(inicio.getTime() + 10 * 60000);
+    const format = date => `${date.getHours()}:${String(date.getMinutes()).padStart(2, '0')}`;
+    return `${format(inicio)} - ${format(fim)}`;
+  }
+}
+
+module.exports = PedidoDto;

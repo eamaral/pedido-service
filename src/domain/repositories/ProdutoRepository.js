@@ -1,37 +1,29 @@
-const Produto = require('../entities/Produto');
+const { Produto } = require('../../infrastructure/database');
 
 class ProdutoRepository {
   async findAll() {
-    return await Produto.findAll();
+    return Produto.findAll();
   }
 
   async findById(id) {
-    return await Produto.findByPk(id);
+    return Produto.findByPk(id);
   }
 
-  async findByCategory(categoria) {
-    return await Produto.findAll({ where: { categoria } });
+  async create(data) {
+    return Produto.create(data);
   }
 
-  async create(produtoData) {
-    try {
-      console.log('[REPOSITÓRIO PRODUTO] Dados recebidos para salvar no banco:', produtoData);
-      const produto = await Produto.create(produtoData);
-      console.log('[REPOSITÓRIO PRODUTO] Produto salvo no banco:', produto);
-      return produto;
-    } catch (error) {
-      console.error('[REPOSITÓRIO PRODUTO] Erro ao salvar produto no banco:', error.message);
-      throw error;
-    }
-  }
-
-  async updateById(id, produtoData) {
-    await Produto.update(produtoData, { where: { id } });
+  async updateById(id, data) {
+    await Produto.update(data, { where: { id } });
     return this.findById(id);
   }
 
   async deleteById(id) {
-    return await Produto.destroy({ where: { id } });
+    return Produto.destroy({ where: { id } });
+  }
+
+  async findByCategory(categoria) {
+    return Produto.findAll({ where: { categoria } });
   }
 }
 

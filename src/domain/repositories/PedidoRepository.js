@@ -1,35 +1,24 @@
-const Pedido = require('../entities/Pedido');
+const { Pedido } = require('../../infrastructure/database');
 
 class PedidoRepository {
-  async findById(id) {
-    return await Pedido.findByPk(id);
-  }
-
   async findAllByStatus(status) {
-    return await Pedido.findAll({
-      where: { status },
-      order: [['created_at', 'ASC']],
-    });
+    return Pedido.findAll({ where: { status } });
   }
 
-  async create(pedidoData) {
-    return await Pedido.create(pedidoData);
+  async findById(id) {
+    return Pedido.findByPk(id);
   }
 
-  async update(pedidoData) {
-    const { id, clienteId, total, status, qrCode } = pedidoData;
-
-    await Pedido.update(
-      { clienteId, total, status, qrCode },
-      { where: { id } }
-    );
-
-    return this.findById(id);
+  async create({ clienteId, itens, total }) {
+    return Pedido.create({ clienteId, itens, total, status: 'Recebido' });
   }
 
-  async updateStatus(pedidoId, status) {
-    await Pedido.update({ status }, { where: { id: pedidoId } });
-    return this.findById(pedidoId);
+  async updateStatus(id, novoStatus) {
+    const pedido = await Pedido.findByPk(id);
+    if (!pedido) return null;
+    pedido.status = novoStatus;
+    await pedido.save();
+    return pedido;
   }
 }
 

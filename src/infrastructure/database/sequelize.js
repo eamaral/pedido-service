@@ -1,5 +1,5 @@
-const { Sequelize } = require('sequelize');
 require('dotenv').config();
+const { Sequelize } = require('sequelize');
 
 const sequelize = new Sequelize(
   process.env.DB_NAME,
@@ -16,14 +16,16 @@ const sequelize = new Sequelize(
 const connectDB = async () => {
   try {
     await sequelize.authenticate();
-    console.log('✅ Conexão com o banco MySQL estabelecida com sucesso.');
-  } catch (error) {
-    console.error('❌ Erro ao conectar no MySQL:', error.message);
+    console.log('✅ Conexão com MySQL estabelecida.');
+  } catch (err) {
+    console.error('❌ Erro ao conectar no MySQL:', err.message);
     process.exit(1);
   }
 };
 
-// ⚠️ Para ambiente de desenvolvimento ou primeira execução
-sequelize.sync({ alter: true });
+// Sincroniza modelos no banco (dev/primeira vez)
+sequelize.sync({ alter: true })
+  .then(() => console.log('✅ Modelos sincronizados.'))
+  .catch(err => console.error('❌ Erro ao sincronizar modelos:', err));
 
 module.exports = { sequelize, connectDB };

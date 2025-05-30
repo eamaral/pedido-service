@@ -1,8 +1,6 @@
-const ProdutoRepository = require('../../domain/repositories/ProdutoRepository');
-
 class CriarProdutoUseCase {
-  constructor() {
-    this.produtoRepository = new ProdutoRepository();
+  constructor(produtoRepository) {
+    this.produtoRepository = produtoRepository;
   }
 
   async execute(produtoData) {

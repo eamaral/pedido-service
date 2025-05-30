@@ -1,28 +1,10 @@
 services:
-  mysql:
-    image: mysql:8.0
-    container_name: ff_mysql
-    restart: unless-stopped
-    environment:
-      MYSQL_ROOT_PASSWORD: password123
-      MYSQL_DATABASE: pedidos
-      MYSQL_USER: pedidos_user
-      MYSQL_PASSWORD: pedidos_pass
-    ports:
-      - "3306:3306"
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 10s
-      retries: 5
-
   pedido:
     build: .
-    container_name: ff_pedido
+    container_name: pedido
     restart: unless-stopped
     env_file:
       - .env.local
     ports:
       - "3000:3000"
-    depends_on:
-      mysql:
-        condition: service_healthy
+

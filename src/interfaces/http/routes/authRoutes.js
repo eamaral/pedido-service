@@ -98,33 +98,6 @@ router.post('/register', register);
  */
 router.post('/confirmar-senha', confirmarSenha);
 
-/**
- * @swagger
- * /auth/cpf-login:
-*   post:
- *     summary: Login via CPF e senha (autentica no Cognito)
- *     tags: [Auth]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               cpf:
- *                 type: string
- *                 example: 34058799811
- *               senha:
- *                 type: string
- *                 example: MinhaSenhaNova123!
- *     responses:
- *       200:
- *         description: Login realizado com sucesso
- *       400:
- *         description: CPF e senha obrigatórios
- *       500:
- *         description: Erro na autenticação
- */
-router.post('/cpf-login', loginViaCpf);
+
 
 module.exports = router;

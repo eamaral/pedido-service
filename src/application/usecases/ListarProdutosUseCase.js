@@ -1,12 +1,14 @@
-const ProdutoRepository = require('../../domain/repositories/ProdutoRepository')
-
 class ListarProdutosUseCase {
-  constructor() {
-    this.produtoRepository = new ProdutoRepository();
+  constructor(produtoRepository) {
+    this.produtoRepository = produtoRepository;
   }
 
   async execute() {
     return await this.produtoRepository.findAll();
+  }
+
+  async findByCategory(categoria) {
+    return await this.produtoRepository.findByCategory(categoria);
   }
 }
 

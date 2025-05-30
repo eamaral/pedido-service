@@ -1,13 +1,13 @@
-class AtualizarStatusPedidoUseCase {
+class BuscarPedidoUseCase {
   constructor(pedidoRepository) {
     this.pedidoRepository = pedidoRepository;
   }
 
-  async execute(pedidoId, novoStatus) {
+  async execute(pedidoId) {
     const pedido = await this.pedidoRepository.findById(pedidoId);
     if (!pedido) throw new Error('Pedido não encontrado');
-    return await this.pedidoRepository.updateStatus(pedidoId, novoStatus);
+    return pedido;
   }
 }
 
-module.exports = AtualizarStatusPedidoUseCase;
+module.exports = BuscarPedidoUseCase;

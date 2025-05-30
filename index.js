@@ -1,4 +1,3 @@
-// index.js
 require('dotenv').config();
 const express       = require('express');
 const bodyParser    = require('body-parser');
@@ -23,21 +22,19 @@ const swaggerOptions = {
     },
     security: [ { BearerAuth: [] } ]
   },
-  apis: [
-    './src/interfaces/http/routes/authRoutes.js',
-    './src/interfaces/http/routes/pedidoRoutes.js',
-    './src/interfaces/http/routes/produtoRoutes.js'
-  ]
+  apis: ['./src/interfaces/http/routes/*.js']
 };
+
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerJsdoc(swaggerOptions)));
+app.use('/health', (_req, res) => res.sendStatus(200));
 
-app.use('/auth', require('./src/interfaces/http/routes/authRoutes'));
-const verifyToken = require('./src/interfaces/http/middlewares/verifyToken');
-app.use('/pedidos', verifyToken, require('./src/interfaces/http/routes/pedidoRoutes'));
-app.use('/produtos',verifyToken, require('./src/interfaces/http/routes/produtoRoutes'));
+// Rotas organizadas
+const verifyToken     = require('./src/interfaces/http/middlewares/verifyToken');
+app.use('/pedidos',   verifyToken, require('./src/interfaces/http/routes/pedidoRoutes'));
+app.use('/produtos',  verifyToken, require('./src/interfaces/http/routes/produtoRoutes'));
+app.use('/auth',      require('./src/interfaces/http/routes/authRoutes'));
 
-app.get('/',      (_req, res) => res.send('Pedido Service is running.'));
-app.get('/health',(_req, res) => res.sendStatus(200));
+app.use('/', (_req, res) => res.send('Pedido Service is running.'));
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
