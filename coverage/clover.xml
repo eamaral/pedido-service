@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1748748487564" clover="3.2.0">
+  <project timestamp="1748748487564" name="All files">
+    <metrics statements="36" coveredstatements="36" conditionals="14" coveredconditionals="12" methods="20" coveredmethods="20" elements="70" coveredelements="68" complexity="0" loc="36" ncloc="36" packages="1" files="9" classes="9"/>
+    <file name="AtualizarStatusPedidoUseCase.js" path="/Users/erikfernandes/GIT/pedido-service/src/application/usecases/AtualizarStatusPedidoUseCase.js">
+      <metrics statements="5" coveredstatements="5" conditionals="2" coveredconditionals="2" methods="2" coveredmethods="2"/>
+      <line num="3" count="1" type="stmt"/>
+      <line num="7" count="2" type="stmt"/>
+      <line num="8" count="2" type="cond" truecount="2" falsecount="0"/>
+      <line num="9" count="1" type="stmt"/>
+      <line num="13" count="1" type="stmt"/>
+    </file>
+    <file name="BuscarPedidoUseCase.js" path="/Users/erikfernandes/GIT/pedido-service/src/application/usecases/BuscarPedidoUseCase.js">
+      <metrics statements="5" coveredstatements="5" conditionals="2" coveredconditionals="2" methods="2" coveredmethods="2"/>
+      <line num="3" count="1" type="stmt"/>
+      <line num="7" count="2" type="stmt"/>
+      <line num="8" count="2" type="cond" truecount="2" falsecount="0"/>
+      <line num="9" count="1" type="stmt"/>
+      <line num="13" count="1" type="stmt"/>
+    </file>
+    <file name="BuscarProdutoPorIdUseCase.js" path="/Users/erikfernandes/GIT/pedido-service/src/application/usecases/BuscarProdutoPorIdUseCase.js">
+      <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
+      <line num="3" count="1" type="stmt"/>
+      <line num="7" count="2" type="stmt"/>
+      <line num="11" count="1" type="stmt"/>
+    </file>
+    <file name="CriarPedidoUseCase.js" path="/Users/erikfernandes/GIT/pedido-service/src/application/usecases/CriarPedidoUseCase.js">
+      <metrics statements="6" coveredstatements="6" conditionals="10" coveredconditionals="8" methods="3" coveredmethods="3"/>
+      <line num="3" count="1" type="stmt"/>
+      <line num="7" count="5" type="cond" truecount="6" falsecount="0"/>
+      <line num="8" count="4" type="stmt"/>
+      <line num="11" count="2" type="cond" truecount="2" falsecount="2"/>
+      <line num="12" count="1" type="stmt"/>
+      <line num="16" count="1" type="stmt"/>
+    </file>
+    <file name="CriarProdutoUseCase.js" path="/Users/erikfernandes/GIT/pedido-service/src/application/usecases/CriarProdutoUseCase.js">
+      <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
+      <line num="3" count="1" type="stmt"/>
+      <line num="7" count="1" type="stmt"/>
+      <line num="11" count="1" type="stmt"/>
+    </file>
+    <file name="EditarProdutoUseCase.js" path="/Users/erikfernandes/GIT/pedido-service/src/application/usecases/EditarProdutoUseCase.js">
+      <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
+      <line num="3" count="1" type="stmt"/>
+      <line num="7" count="1" type="stmt"/>
+      <line num="8" count="1" type="stmt"/>
+      <line num="12" count="1" type="stmt"/>
+    </file>
+    <file name="ListarPedidosEmPreparacaoUseCase.js" path="/Users/erikfernandes/GIT/pedido-service/src/application/usecases/ListarPedidosEmPreparacaoUseCase.js">
+      <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
+      <line num="3" count="1" type="stmt"/>
+      <line num="7" count="1" type="stmt"/>
+      <line num="11" count="1" type="stmt"/>
+    </file>
+    <file name="ListarProdutosUseCase.js" path="/Users/erikfernandes/GIT/pedido-service/src/application/usecases/ListarProdutosUseCase.js">
+      <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="3"/>
+      <line num="3" count="2" type="stmt"/>
+      <line num="7" count="1" type="stmt"/>
+      <line num="11" count="1" type="stmt"/>
+      <line num="15" count="1" type="stmt"/>
+    </file>
+    <file name="RemoverProdutoUseCase.js" path="/Users/erikfernandes/GIT/pedido-service/src/application/usecases/RemoverProdutoUseCase.js">
+      <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
+      <line num="3" count="1" type="stmt"/>
+      <line num="7" count="1" type="stmt"/>
+      <line num="11" count="1" type="stmt"/>
+    </file>
+  </project>
+</coverage>
