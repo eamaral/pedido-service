@@ -34,7 +34,12 @@ const swaggerOptions = {
   ]
 };
 
-app.use('/pedido-docs', swaggerUi.serve, swaggerUi.setup(swaggerJsdoc(swaggerOptions)));
+const swaggerSpec = swaggerJsdoc(swaggerOptions);
+
+app.use('/pedido-docs', swaggerUi.serve);
+app.get('/pedido-docs', (_req, res) => res.redirect('/pedido-docs/'));
+app.get('/pedido-docs/', swaggerUi.setup(swaggerSpec));
+
 
 // ✅ Rotas fixas com prefixo /api
 app.use('/api/auth', require('./src/interfaces/http/routes/authRoutes'));
