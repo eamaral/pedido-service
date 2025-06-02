@@ -34,7 +34,9 @@ const swaggerOptions = {
   ]
 };
 
-app.use('/pedido-docs', swaggerUi.serve, swaggerUi.setup(swaggerJsdoc(swaggerOptions)));
+app.use('/pedido-docs', swaggerUi.serveFiles(swaggerJsdoc(swaggerOptions), {}));
+app.get('/pedido-docs', swaggerUi.setup(swaggerJsdoc(swaggerOptions)));
+
 
 
 // ✅ Rotas fixas com prefixo /api
