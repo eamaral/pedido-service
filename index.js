@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const { connectDB } = require('./src/infrastructure/database/sequelize');
@@ -7,8 +8,10 @@ const swaggerUi = require('swagger-ui-express');
 const app = express();
 app.use(bodyParser.json());
 
+// Conexão com banco
 connectDB();
 
+// Configuração do Swagger
 const swaggerOptions = {
   swaggerDefinition: {
     openapi: '3.0.0',
@@ -18,11 +21,18 @@ const swaggerOptions = {
       description: 'Gerenciamento de pedidos e produtos',
     },
     servers: [
-      { url: 'http://ms-shared-alb-1023094345.us-east-1.elb.amazonaws.com/api', description: 'API Swagger' }
+      {
+        url: 'http://ms-shared-alb-1023094345.us-east-1.elb.amazonaws.com/api',
+        description: 'API Swagger'
+      }
     ],
     components: {
       securitySchemes: {
-        BearerAuth: { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' }
+        BearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT'
+        }
       }
     },
     security: [{ BearerAuth: [] }]
@@ -35,13 +45,9 @@ const swaggerOptions = {
 };
 
 const swaggerSpec = swaggerJsdoc(swaggerOptions);
+app.use('/pedido-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-app.use('/pedido-docs', swaggerUi.serve);
-app.get('/pedido-docs', (_req, res) => res.redirect('/pedido-docs/'));
-app.get('/pedido-docs/', swaggerUi.setup(swaggerSpec));
-
-
-// ✅ Rotas fixas com prefixo /api
+// Rotas com prefixo fixo
 app.use('/api/auth', require('./src/interfaces/http/routes/authRoutes'));
 
 const verifyToken = require('./src/interfaces/http/middlewares/verifyToken');
