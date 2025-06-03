@@ -1,26 +1,30 @@
-# 🧾 pedido-service
+# 📦 Pedido Service
 
-Microsserviço responsável por **registrar pedidos**, gerenciar seu **status** ao longo do tempo (ex: Em preparo, Pronto para retirada), bem como **consultar produtos disponíveis**. Este serviço também contém toda a lógica relacionada ao cardápio da lanchonete.
+Este microsserviço é responsável por gerenciar **pedidos** no sistema da lanchonete: criação, consulta, alteração de status e integração com pagamento e cliente.
 
-![SonarCloud](https://sonarcloud.io/api/project_badges/measure?project=eamaral_pedido-service&metric=coverage)
+> Projeto estruturado com **Clean Architecture**, separando regras de domínio, casos de uso, rotas e integração.
 
-## 🔧 Tecnologias
+---
+
+## 📊 SonarCloud
+
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=eamaral_pedido-service&metric=alert_status)](https://sonarcloud.io/dashboard?id=eamaral_pedido-service)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=eamaral_pedido-service&metric=coverage)](https://sonarcloud.io/dashboard?id=eamaral_pedido-service)
+[![Maintainability](https://sonarcloud.io/api/project_badges/measure?project=eamaral_pedido-service&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=eamaral_pedido-service)
+
+---
+
+## ⚙️ Tecnologias Utilizadas
 
 - Node.js + Express
-- MySQL (via Sequelize)
-- Clean Architecture
-- Jest para testes automatizados
-- Swagger para documentação de API
-- Deploy via ECS Fargate (AWS)
-- Integração contínua com SonarCloud
+- MySQL (RDS)
+- Docker
+- Swagger para documentação
+- JWT (Bearer Token)
+- Axios (chamadas para cliente-service)
+- Sequelize (ORM)
 
-## 📁 Estrutura
-
-- `domain/`: Entidades e regras de negócio
-- `application/`: Casos de uso
-- `infrastructure/`: Sequelize, rotas, controladores
-- `interfaces/`: Repositórios e contratos externos
-- `config/`: Configurações globais e banco de dados
+---
 
 ## 📦 Banco de dados
 
@@ -61,33 +65,58 @@ Microsserviço responsável por **registrar pedidos**, gerenciar seu **status** 
 | PATCH  | `/pedidos/:id/para-em-preparo` | Muda para status "Em preparo"    |
 | PATCH  | `/pedidos/:id/pronto` | Muda para status "Pronto para retirada"   |
 
+
+> Swagger disponível em `/pedido-docs`.
+
 ---
 
-## 🚀 Deploy
+## 🚀 Executando localmente
 
-- O serviço é empacotado via Docker
-- Subido automaticamente para o Amazon ECR
-- Deploy automatizado via GitHub Actions
-- Executado no ECS Fargate com Load Balancer compartilhado
+```bash
+git clone https://github.com/seu-usuario/pedido-service.git
+cd pedido-service
+cp .env.example .env
+# Preencha variáveis do banco e integração com cliente
+docker-compose up --build
+```
+
+---
+
+## 🧩 Clean Architecture
+
+Estrutura do projeto organizada em camadas:
+
+- `domain/`: entidades e contratos
+- `usecases/`: regras de negócio
+- `interfaces/http/`: controllers e rotas
+- `infrastructure/`: repositórios e integrações (ex: ClienteApiRepository)
+- `config/`: env, banco, swagger, etc.
 
 ---
 
 ## 🧪 Testes
 
-- Executados com **Jest**
-- Cobertura mínima garantida de **80%**
-- Um dos casos implementa **BDD**
-- Resultados disponíveis no SonarCloud (badge acima)
+- Testes unitários para os casos de uso com Jest
+- Cobertura mínima de 80% integrada ao SonarCloud
+- Testes focados em lógica de negócios (`usecases/`)
 
 ---
 
-## 📄 Swagger
+## 📦 CI/CD
 
-- Acesse `/api-docs` no serviço para visualizar a documentação interativa
+- GitHub Actions: build, push da imagem Docker e deploy via Terraform
+- Infraestrutura como código (IaC) com ECS Fargate, VPC, ALB e RDS
+
+---
+
+## 🛠️ Observações
+
+- Cada pedido pertence a um cliente (validação via cliente-service)
+- Status dos pedidos é atualizado via integração com pagamento
+- Banco isolado por microsserviço (MySQL), conforme boas práticas
 
 ---
 
 ## 📄 Licença
 
-Projeto acadêmico para fins de demonstração
-
+Projeto acadêmico para fins de demonstração.
