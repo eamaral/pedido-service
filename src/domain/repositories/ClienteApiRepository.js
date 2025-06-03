@@ -2,7 +2,8 @@ const axios = require('axios');
 
 class ClienteApiRepository {
   constructor() {
-    this.baseUrl    = process.env.CLIENTE_SERVICE_URL;
+    const base = process.env.API_BASE_URL;
+    this.baseUrl = `${base}/api/clientes`;
     this.authHeader = null;
   }
 
@@ -13,7 +14,7 @@ class ClienteApiRepository {
   async findByCPF(cpf) {
     try {
       const resp = await axios.get(
-        `${this.baseUrl}/api/clientes/identificar/${cpf}`,
+        `${this.baseUrl}/identificar/${cpf}`,
         { headers: { Authorization: this.authHeader } }
       );
       return resp.data;
@@ -27,7 +28,7 @@ class ClienteApiRepository {
   async atualizarPontos(cpf) {
     try {
       const resp = await axios.put(
-        `${this.baseUrl}/api/clientes/${cpf}`,
+        `${this.baseUrl}/${cpf}`,
         {},
         { headers: { Authorization: this.authHeader } }
       );
